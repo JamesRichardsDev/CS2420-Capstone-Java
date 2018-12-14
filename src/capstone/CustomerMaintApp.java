@@ -143,8 +143,19 @@ public class CustomerMaintApp extends JFrame {
 
 			} while (!isValidatedFirst);
 
-			String newLastName = JOptionPane.showInputDialog(null, "Enter the customer's new last name",
-					"Edit Customer Last Name", JOptionPane.QUESTION_MESSAGE);
+			boolean isValidatedLast;
+			String newLastName = "";
+
+			do {
+				newLastName = JOptionPane.showInputDialog(null, "Enter the customer's new last name",
+						"Edit Customer Last Name", JOptionPane.QUESTION_MESSAGE);
+				isValidatedLast = validateName(newLastName);
+				if (!isValidatedLast) {
+					JOptionPane.showMessageDialog(null, newLastName + " is not a valid name.", "Invalid name",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+			} while (!isValidatedLast);
 
 			try {
 				CustomerDB.editCustomer(newEmail, newFirstName, newLastName, emailSelection);
@@ -213,6 +224,7 @@ public class CustomerMaintApp extends JFrame {
 			ResultSet res = CustomerDB.getCustomers();
 
 			table.setModel(DbUtils.resultSetToTableModel(res));
+			table.setEnabled(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
