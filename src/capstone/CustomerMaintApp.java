@@ -84,8 +84,20 @@ public class CustomerMaintApp extends JFrame {
 
 			} while (!isValidated);
 
-			String first = JOptionPane.showInputDialog(null, "Enter the First Name", "New Customer First Name",
-					JOptionPane.QUESTION_MESSAGE);
+			boolean isValidatedFirst;
+			String first = "";
+
+			do {
+				first = JOptionPane.showInputDialog(null, "Enter the customer's new first name",
+						"Edit Customer First Name", JOptionPane.QUESTION_MESSAGE);
+				isValidatedFirst = validateName(first);
+				if (!isValidatedFirst) {
+					JOptionPane.showMessageDialog(null, first + " is not a valid name.", "Invalid name",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+			} while (!isValidatedFirst);
+
 			String last = JOptionPane.showInputDialog(null, "Enter the Last Name", "New Customer Last Name",
 					JOptionPane.QUESTION_MESSAGE);
 			try {
@@ -117,8 +129,20 @@ public class CustomerMaintApp extends JFrame {
 
 			} while (!isValidated);
 
-			String newFirstName = JOptionPane.showInputDialog(null, "Enter the customer's new first name",
-					"Edit Customer First Name", JOptionPane.QUESTION_MESSAGE);
+			boolean isValidatedFirst;
+			String newFirstName = "";
+
+			do {
+				newFirstName = JOptionPane.showInputDialog(null, "Enter the customer's new first name",
+						"Edit Customer First Name", JOptionPane.QUESTION_MESSAGE);
+				isValidatedFirst = validateName(newFirstName);
+				if (!isValidatedFirst) {
+					JOptionPane.showMessageDialog(null, newFirstName + " is not a valid name.", "Invalid name",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+			} while (!isValidatedFirst);
+
 			String newLastName = JOptionPane.showInputDialog(null, "Enter the customer's new last name",
 					"Edit Customer Last Name", JOptionPane.QUESTION_MESSAGE);
 
@@ -199,6 +223,13 @@ public class CustomerMaintApp extends JFrame {
 		String emailRegex = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-zA-Z]{2,})$";
 		Pattern emailPat = Pattern.compile(emailRegex);
 		Matcher matcher = emailPat.matcher(email);
+		return matcher.matches();
+	}
+
+	public static boolean validateName(String name) {
+		String nameRegex = "^[a-zA-Z]+(([\\'\\,\\.\\-][a-zA-Z])?[a-zA-Z]*)*$";
+		Pattern namePat = Pattern.compile(nameRegex);
+		Matcher matcher = namePat.matcher(name);
 		return matcher.matches();
 	}
 
