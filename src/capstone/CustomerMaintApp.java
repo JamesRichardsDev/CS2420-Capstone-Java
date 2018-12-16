@@ -1,5 +1,6 @@
 package capstone;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -63,8 +64,9 @@ public class CustomerMaintApp extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(31, 55, 624, 173);
 		frame.getContentPane().add(scrollPane);
-
+		frame.getContentPane().setBackground(Color.darkGray);
 		table = new JTable(model);
+		
 		scrollPane.setViewportView(table);
 
 		JButton btnAdd = new JButton("Add");
@@ -98,8 +100,20 @@ public class CustomerMaintApp extends JFrame {
 
 			} while (!isValidatedFirst);
 
-			String last = JOptionPane.showInputDialog(null, "Enter the Last Name", "New Customer Last Name",
-					JOptionPane.QUESTION_MESSAGE);
+			boolean isValidatedLast;
+			String last = "";
+
+			do {
+				last = JOptionPane.showInputDialog(null, "Enter the Last Name", "New Customer Last Name",
+						JOptionPane.QUESTION_MESSAGE);
+				isValidatedLast = validateName(last);
+				if (!isValidatedLast) {
+					JOptionPane.showMessageDialog(null, last + " is not a valid name.", "Invalid name",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+			} while (!isValidatedLast);
+
 			try {
 				CustomerDB.AddCustomer(first, last, email);
 				refresh();
@@ -224,7 +238,7 @@ public class CustomerMaintApp extends JFrame {
 			ResultSet res = CustomerDB.getCustomers();
 
 			table.setModel(DbUtils.resultSetToTableModel(res));
-			table.setEnabled(false);
+			table.setDefaultEditor(Object.class, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
